@@ -79,6 +79,32 @@ public class PluginPickerDialog extends javax.swing.JDialog
         availablePluginsNamesList.setCellRenderer(getCellRenderer());
     }
 
+    public void setPluginsFromFolder(File[] jarFiles)
+    {
+        for (File jarFile : jarFiles)
+        {
+            loadPlugin(jarFile);
+        }
+    }
+
+    private void loadPlugin(File jarFile)
+    {
+        try
+        {
+            Set<IPruningAlgoritmus> algs = pluginLoader.loadPlugins(jarFile);
+            for (IPruningAlgoritmus alg : algs)
+            {
+                AlgorithmModel am = new AlgorithmModel(alg, Color.WHITE);
+                avaModel.addElement(am);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            JOptionPane.showMessageDialog(this, "Plugin error:\n" + ex.getMessage(), "Invalid plugin error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private DefaultListCellRenderer getCellRenderer()
     {
         return new DefaultListCellRenderer()
@@ -273,20 +299,7 @@ public class PluginPickerDialog extends javax.swing.JDialog
             File selectedFile = fileChooser.getSelectedFile();
             if (selectedFile != null)
             {
-                try
-                {
-                    Set<IPruningAlgoritmus> algs = pluginLoader.loadPlugins(selectedFile);
-                    for (IPruningAlgoritmus alg : algs)
-                    {
-                        AlgorithmModel am = new AlgorithmModel(alg, Color.WHITE);
-                        avaModel.addElement(am);
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    JOptionPane.showMessageDialog(this, "Plugin error:\n" + ex.getMessage(), "Invalid plugin error", JOptionPane.ERROR_MESSAGE);
-                }
+                loadPlugin(selectedFile);
             }
 
         }

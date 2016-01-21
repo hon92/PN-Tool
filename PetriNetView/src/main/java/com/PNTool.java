@@ -5,8 +5,11 @@ import com.views.PluginPickerDialog;
 import com.views.Window;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JFileChooser;
@@ -188,7 +191,41 @@ public class PNTool implements IToolController
             return;
         }
 
+        File[] foundJarFiles = null;
+        try
+        {
+            URL url = ClassLoader.getSystemClassLoader().getResource("plugins");
+            File pluginsFolder = new File(url.toURI());
+            foundJarFiles = pluginsFolder.listFiles(new FileFilter()
+            {
+
+                @Override
+                public boolean accept(File pathname)
+                {
+                    if (!pathname.isFile())
+                    {
+                        return false;
+                    }
+                    if (!pathname.getName().endsWith(".jar"))
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+
+            }
+            );
+        }
+        catch (URISyntaxException ex)
+        {
+
+        }
+
         PluginPickerDialog ppd = new PluginPickerDialog(window, true, availablePlugins, usedPlugins);
+        if (foundJarFiles != null)
+        {
+            ppd.setPluginsFromFolder(foundJarFiles);
+        }
         PluginPickerDialog.STATE state = ppd.showDialog();
         if (state != PluginPickerDialog.STATE.OK)
         {
