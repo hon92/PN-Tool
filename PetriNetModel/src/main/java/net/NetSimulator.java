@@ -87,4 +87,9 @@ public class NetSimulator
     {
         return net;
     }
+
+    public void setMarking(Marking marking)
+    {
+        net.setMarking(marking);
+    }
 }
