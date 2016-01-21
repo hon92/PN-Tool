@@ -1,7 +1,9 @@
 package com.views;
 
 import com.PNTool;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import javax.swing.JPanel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,6 +21,7 @@ public class Window extends javax.swing.JFrame
     public static final int WINDOW_HEIGHT = 720;
     public static final String TOOL_NAME = "Petri Net tool";
     private IToolController tool;
+    private final ProjectView projectView = new ProjectView();
 
     public Window()
     {
@@ -33,9 +36,25 @@ public class Window extends javax.swing.JFrame
         setPreferredSize(dim);
         setMinimumSize(dim);
         //createToolBar();
+        contentPanel.add(projectView, BorderLayout.CENTER);
         projectView.setVisible(false);
+        stopSimulationButton.setVisible(false);
         tool = new PNTool(this);
         setTitle("");
+    }
+
+    public JPanel getContentPanel()
+    {
+        return contentPanel;
+    }
+
+    public void setProjectView()
+    {
+        contentPanel.removeAll();
+        contentPanel.add(projectView, BorderLayout.CENTER);
+        contentPanel.repaint();
+        contentPanel.grabFocus();
+        projectView.getNetView().grabFocus();
     }
 
     public ProjectView getProjectView()
@@ -89,9 +108,10 @@ public class Window extends javax.swing.JFrame
         saveAsProjectButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         startSimulationButton = new javax.swing.JButton();
+        stopSimulationButton = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         generateGraphButton = new javax.swing.JButton();
-        projectView = new com.views.ProjectView();
+        contentPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newProjectButtonItem = new javax.swing.JMenuItem();
@@ -196,6 +216,20 @@ public class Window extends javax.swing.JFrame
             }
         });
         toolBar.add(startSimulationButton);
+
+        stopSimulationButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Stop Sign-48.png"))); // NOI18N
+        stopSimulationButton.setToolTipText("Stop simulation");
+        stopSimulationButton.setFocusable(false);
+        stopSimulationButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        stopSimulationButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        stopSimulationButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                stopSimulationButtonActionPerformed(evt);
+            }
+        });
+        toolBar.add(stopSimulationButton);
         toolBar.add(jSeparator2);
 
         generateGraphButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Genealogy-48.png"))); // NOI18N
@@ -213,7 +247,9 @@ public class Window extends javax.swing.JFrame
         toolBar.add(generateGraphButton);
 
         getContentPane().add(toolBar, java.awt.BorderLayout.PAGE_START);
-        getContentPane().add(projectView, java.awt.BorderLayout.CENTER);
+
+        contentPanel.setLayout(new java.awt.BorderLayout());
+        getContentPane().add(contentPanel, java.awt.BorderLayout.CENTER);
 
         fileMenu.setText("File");
 
@@ -511,7 +547,25 @@ public class Window extends javax.swing.JFrame
         // TODO add your handling code here:
         //start simulation
         tool.getSimulator().startSimulation();
+        if (tool.getSimulator().isRunning())
+        {
+            swapSimulationButtons();
+        }
     }//GEN-LAST:event_startSimulationButtonActionPerformed
+
+    public void swapSimulationButtons()
+    {
+        if (startSimulationButton.isVisible())
+        {
+            startSimulationButton.setVisible(false);
+            stopSimulationButton.setVisible(true);
+        }
+        else
+        {
+            startSimulationButton.setVisible(true);
+            stopSimulationButton.setVisible(false);
+        }
+    }
 
     private void generateGraphButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generateGraphButtonActionPerformed
     {//GEN-HEADEREND:event_generateGraphButtonActionPerformed
@@ -519,6 +573,14 @@ public class Window extends javax.swing.JFrame
         //generate .dot file
         tool.generateReachibilityGraph();
     }//GEN-LAST:event_generateGraphButtonActionPerformed
+
+    private void stopSimulationButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopSimulationButtonActionPerformed
+    {//GEN-HEADEREND:event_stopSimulationButtonActionPerformed
+        // TODO add your handling code here:
+        //stop simulation
+        tool.getSimulator().stopSimulation();
+        swapSimulationButtons();
+    }//GEN-LAST:event_stopSimulationButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -572,6 +634,7 @@ public class Window extends javax.swing.JFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem closeMenuItem;
     private javax.swing.JButton closeProjectButton;
+    private javax.swing.JPanel contentPanel;
     private javax.swing.JMenuItem createImageButton;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
@@ -585,7 +648,6 @@ public class Window extends javax.swing.JFrame
     private javax.swing.JButton newProjectButton;
     private javax.swing.JMenuItem newProjectButtonItem;
     private javax.swing.JButton openProjectButton;
-    private com.views.ProjectView projectView;
     private javax.swing.JMenuItem runSimulationMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JButton saveAsProjectButton;
@@ -594,6 +656,7 @@ public class Window extends javax.swing.JFrame
     private javax.swing.JMenuItem showImageButton;
     private javax.swing.JMenu simulationMenu;
     private javax.swing.JButton startSimulationButton;
+    private javax.swing.JButton stopSimulationButton;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 

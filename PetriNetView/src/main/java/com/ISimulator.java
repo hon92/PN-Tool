@@ -13,4 +13,8 @@ public interface ISimulator
 {
 
     void startSimulation();
+
+    public void stopSimulation();
+
+    boolean isRunning();
 }

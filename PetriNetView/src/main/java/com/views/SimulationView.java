@@ -36,13 +36,22 @@ public class SimulationView extends JPanel implements Runnable
     private boolean simulationRunning = false;
     private final MouseSimulationHandler mouseHandler;
     private final NetSimulator netSimulator;
+    private final SimulationProjectView spv;
 
-    public SimulationView(Net net) throws CloneNotSupportedException
+    public SimulationView(SimulationProjectView spv, Net net) throws CloneNotSupportedException
     {
-        setBackground(Color.WHITE);
+        setBackground(Color.LIGHT_GRAY);
         this.net = net.clone();
+        this.spv = spv;
         mouseHandler = new MouseSimulationHandler();
         netSimulator = new NetSimulator(this.net);
+        spv.updateAvailableTransitions(netSimulator.getAvailableTransitions());
+        spv.updateMarkingPath(netSimulator.getInitialMarking(), this.net.getPlaces());
+    }
+
+    public NetSimulator getNetSimulator()
+    {
+        return netSimulator;
     }
 
     @Override
@@ -60,8 +69,6 @@ public class SimulationView extends JPanel implements Runnable
         Graphics2D g = (Graphics2D) graphics;
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setStroke(new BasicStroke(1.5f));
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(0, 0, getWidth(), getHeight());
 
         for (Place p : net.getPlaces())
         {
@@ -145,6 +152,8 @@ public class SimulationView extends JPanel implements Runnable
             if (netSimulator.canFireTransition(t))
             {
                 netSimulator.fireTransition(t);
+                spv.updateAvailableTransitions(netSimulator.getAvailableTransitions());
+                spv.updateMarkingPath(net.getMarking(), net.getPlaces());
             }
         }
     }

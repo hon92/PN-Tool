@@ -228,6 +228,20 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startSimulationButtonActionPerformed"/>
           </Events>
         </Component>
+        <Component class="javax.swing.JButton" name="stopSimulationButton">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/icons/Stop Sign-48.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Stop simulation"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stopSimulationButtonActionPerformed"/>
+          </Events>
+        </Component>
         <Component class="javax.swing.JToolBar$Separator" name="jSeparator2">
         </Component>
         <Component class="javax.swing.JButton" name="generateGraphButton">
@@ -246,12 +260,14 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="com.views.ProjectView" name="projectView">
+    <Container class="javax.swing.JPanel" name="contentPanel">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
           <BorderConstraints direction="Center"/>
         </Constraint>
       </Constraints>
-    </Component>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+    </Container>
   </SubComponents>
 </Form>

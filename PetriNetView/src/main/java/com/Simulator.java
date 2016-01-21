@@ -5,13 +5,12 @@
  */
 package com;
 
+import com.views.SimulationProjectView;
 import com.views.SimulationView;
-import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.BorderLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
+import javax.swing.JPanel;
 import net.Net;
 
 /**
@@ -21,7 +20,10 @@ import net.Net;
 public class Simulator implements ISimulator
 {
 
-    private PNTool tool;
+    private final PNTool tool;
+    private SimulationProjectView simulationProjectView;
+    private SimulationView simulationView;
+    private boolean running = false;
 
     public Simulator(PNTool tool)
     {
@@ -30,29 +32,42 @@ public class Simulator implements ISimulator
 
     private void createSimulation() throws CloneNotSupportedException
     {
-        Net net = tool.getProject().getNet();
-
-        JDialog dialog = new JDialog(tool.getWindow(), "Simulation", false);
-        dialog.setLocation(tool.getWindow().getLocation());
-        Dimension dim = new Dimension(640, 480);
-        dialog.setPreferredSize(dim);
-        dialog.setMinimumSize(dim);
-        SimulationView simulationView = new SimulationView(net);
-        dialog.add(simulationView);
-        dialog.pack();
-        simulationView.startSimulation();
-
-        dialog.addWindowListener(new WindowAdapter()
+        if (!tool.isOpenedProject())
         {
+            return;
+        }
+        Net net = tool.getProject().getNet();
+        JPanel contentPanel = tool.getWindow().getContentPanel();
+        contentPanel.removeAll();
 
-            @Override
-            public void windowClosing(WindowEvent e)
-            {
-                simulationView.stopSimulation();
-            }
-
-        });
-        dialog.setVisible(true);
+        simulationProjectView = new SimulationProjectView();
+        simulationView = new SimulationView(simulationProjectView, net);
+        simulationProjectView.setSimulationView(simulationView);
+        contentPanel.add(simulationProjectView, BorderLayout.CENTER);
+        contentPanel.repaint();
+        simulationView.startSimulation();
+        running = true;
+//        JDialog dialog = new JDialog(tool.getWindow(), "Simulation", false);
+//        dialog.setLocation(tool.getWindow().getLocation());
+//        View netView = tool.getWindow().getProjectView().getNetView();
+//        Dimension dim = new Dimension(netView.getWidth(), netView.getHeight());
+//        dialog.setPreferredSize(dim);
+//        dialog.setMinimumSize(dim);
+//        SimulationView simulationView = new SimulationView(net);
+//        dialog.add(simulationView);
+//        dialog.pack();
+//        simulationView.startSimulation();
+//        dialog.addWindowListener(new WindowAdapter()
+//        {
+//
+//            @Override
+//            public void windowClosing(WindowEvent e)
+//            {
+//                simulationView.stopSimulation();
+//            }
+//
+//        });
+//        dialog.setVisible(true);
     }
 
     @Override
@@ -67,6 +82,24 @@ public class Simulator implements ISimulator
 
             Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void stopSimulation()
+    {
+        if (simulationView != null)
+        {
+            simulationView.stopSimulation();
+        }
+        running = false;
+
+        tool.getWindow().setProjectView();
+    }
+
+    @Override
+    public boolean isRunning()
+    {
+        return running;
     }
 
 }
