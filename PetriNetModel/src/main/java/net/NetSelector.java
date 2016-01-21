@@ -65,14 +65,22 @@ public class NetSelector implements INetSelector
             }
             else
             {
-                Point first = a.getPlacePoint(a.points[1].x, a.points[1].y);
-                double dist = Line2D.ptLineDistSq(first.x, first.y, a.points[1].x, a.points[1].y, x, y);
+                int pIndex = 1;
+                int p2Index = a.points.length - 2;
+                if (a.getArcType() == ArcType.OUTPUT)
+                {
+                    pIndex = p2Index;
+                    p2Index = 1;
+                }
+
+                Point first = a.getPlacePoint(a.points[pIndex].x, a.points[pIndex].y);
+                double dist = Line2D.ptSegDistSq(first.x, first.y, a.points[pIndex].x, a.points[pIndex].y, x, y);
                 if (dist < ARC_SELECT_RAD)
                 {
                     return a;
                 }
-                Point last = a.getTransitionPoint(a.points[a.points.length - 2].x, a.points[a.points.length - 2].y);
-                dist = Line2D.ptLineDistSq(last.x, last.y, a.points[a.points.length - 2].x, a.points[a.points.length - 2].y, x, y);
+                Point last = a.getTransitionPoint(a.points[p2Index].x, a.points[p2Index].y);
+                dist = Line2D.ptSegDistSq(last.x, last.y, a.points[p2Index].x, a.points[p2Index].y, x, y);
                 if (dist < ARC_SELECT_RAD)
                 {
                     return a;
@@ -82,7 +90,7 @@ public class NetSelector implements INetSelector
                 {
                     Point p0 = a.points[i - 1];
                     Point p1 = a.points[i];
-                    dist = Line2D.ptLineDistSq(p0.x, p0.y, p1.x, p1.y, x, y);
+                    dist = Line2D.ptSegDistSq(p0.x, p0.y, p1.x, p1.y, x, y);
                     if (dist < ARC_SELECT_RAD)
                     {
                         return a;

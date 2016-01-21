@@ -60,9 +60,9 @@ public class OutputArc extends Arc
         }
         else
         {
-            Point p = getPlacePoint(points[1].x, points[1].y);
-            double dx = p.x - points[1].x;
-            double dy = p.y - points[1].y;
+            Point p = getPlacePoint(points[points.length - 2].x, points[points.length - 2].y);
+            double dx = p.x - points[points.length - 2].x;
+            double dy = p.y - points[points.length - 2].y;
             int txx = p.x;
             int tyy = p.y;
             g.translate(txx, tyy);
