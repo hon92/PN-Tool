@@ -72,6 +72,11 @@ public class View extends javax.swing.JPanel
         mouseHandler.addSelectingListener(this.projectView);
     }
 
+    public void setProjectView(ProjectView projectView)
+    {
+        this.projectView = projectView;
+    }
+
     public ProjectView getProjectView()
     {
         return this.projectView;

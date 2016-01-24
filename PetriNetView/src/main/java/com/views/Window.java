@@ -53,7 +53,6 @@ public class Window extends javax.swing.JFrame
         contentPanel.removeAll();
         contentPanel.add(projectView, BorderLayout.CENTER);
         contentPanel.repaint();
-        contentPanel.grabFocus();
         projectView.getNetView().grabFocus();
     }
 

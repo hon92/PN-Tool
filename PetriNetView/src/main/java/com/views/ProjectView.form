@@ -83,7 +83,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/icons/Circled-48.png"/>
                     </Property>
-                    <Property name="toolTipText" type="java.lang.String" value="Place"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Place (P)"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
@@ -97,7 +97,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/icons/Rectangle Stroked-48.png"/>
                     </Property>
-                    <Property name="toolTipText" type="java.lang.String" value="Transition"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Transition (T)"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
@@ -111,7 +111,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/icons/Up Right-48.png"/>
                     </Property>
-                    <Property name="toolTipText" type="java.lang.String" value="Arc"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Arc (A)"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
@@ -125,7 +125,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/icons/Right 2-48.png"/>
                     </Property>
-                    <Property name="toolTipText" type="java.lang.String" value="Inhibition arc"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Inhibition arc (I)"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
@@ -135,18 +135,6 @@
                   </Events>
                 </Component>
               </SubComponents>
-            </Container>
-            <Container class="javax.swing.JScrollPane" name="scrollPanel">
-              <Properties>
-                <Property name="focusable" type="boolean" value="false"/>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
-                  <JSplitPaneConstraints position="right"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
             </Container>
           </SubComponents>
         </Container>

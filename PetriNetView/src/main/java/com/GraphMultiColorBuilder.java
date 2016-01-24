@@ -22,7 +22,6 @@ public class GraphMultiColorBuilder extends AGraphVizBuilder
     private int counter = 0;
     private final Map<Marking, Integer> clusterInfoMap = new HashMap<>();
     private final StringBuilder tb = new StringBuilder();
-    private final Map<String, Integer> tempMap = new HashMap<>();
     private final Map<String, Cluster> clusters = new HashMap<>();
 
     private class Cluster
@@ -81,7 +80,7 @@ public class GraphMultiColorBuilder extends AGraphVizBuilder
     @Override
     public void writeNodesAndEdges()
     {
-        for (Map.Entry<Marking, List<MarkingGraph.Edge>> entry : markingGraph.graph.entrySet())
+        for (Map.Entry<Marking, List<MarkingGraph.Edge>> entry : markingGraph.getGraph().entrySet())
         {
             for (MarkingGraph.Edge edge : entry.getValue())
             {

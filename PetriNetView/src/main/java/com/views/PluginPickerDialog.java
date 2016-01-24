@@ -35,6 +35,8 @@ public class PluginPickerDialog extends javax.swing.JDialog
     private final DefaultListModel<AlgorithmModel> avaModel = new DefaultListModel<>();
     private final DefaultListModel<AlgorithmModel> useModel = new DefaultListModel<>();
 
+    private final Set<AlgorithmModel> pluginsAlgorithms = new HashSet<>();
+
     public STATE showDialog()
     {
         setVisible(true);
@@ -81,9 +83,24 @@ public class PluginPickerDialog extends javax.swing.JDialog
 
     public void setPluginsFromFolder(File[] jarFiles)
     {
-        for (File jarFile : jarFiles)
+        pluginsAlgorithms.clear();
+        try
         {
-            loadPlugin(jarFile);
+            for (File jarFile : jarFiles)
+            {
+                Set<IPruningAlgoritmus> algs = pluginLoader.loadPlugins(jarFile);
+                for (IPruningAlgoritmus alg : algs)
+                {
+                    AlgorithmModel am = new AlgorithmModel(alg, Color.WHITE);
+                    pluginsAlgorithms.add(am);
+                    avaModel.addElement(am);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            pluginsAlgorithms.clear();
+            JOptionPane.showMessageDialog(this, "Plugin error:\n" + ex.getMessage(), "Invalid plugin error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -352,6 +369,8 @@ public class PluginPickerDialog extends javax.swing.JDialog
             {
                 clim.color = newColor;
             }
+            usedPluginsList.revalidate();
+            usedPluginsList.repaint();
         }
 
     }//GEN-LAST:event_colorButtonActionPerformed
@@ -461,6 +480,10 @@ public class PluginPickerDialog extends javax.swing.JDialog
 
     public Set<AlgorithmModel> getAvailablePlugins()
     {
+        for (AlgorithmModel am : pluginsAlgorithms)
+        {
+            avaModel.removeElement(am);
+        }
         Set<AlgorithmModel> set = new HashSet<>();
         for (int i = 0; i < avaModel.getSize(); i++)
         {
@@ -471,6 +494,10 @@ public class PluginPickerDialog extends javax.swing.JDialog
 
     public Set<AlgorithmModel> getUsedPlugins()
     {
+        for (AlgorithmModel am : pluginsAlgorithms)
+        {
+            useModel.removeElement(am);
+        }
         Set<AlgorithmModel> set = new HashSet<>();
         for (int i = 0; i < useModel.getSize(); i++)
         {

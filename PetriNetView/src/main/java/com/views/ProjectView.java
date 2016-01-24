@@ -21,10 +21,13 @@ public class ProjectView extends javax.swing.JPanel implements ISelectionObserve
 {
 
     private JPanel propertiesInfoPanel = null;
+    private final View view;
 
     public ProjectView()
     {
         initComponents();
+        view = new View(this);
+        verticalSplitPanel.setBottomComponent(view);
     }
 
     public View getNetView()
@@ -55,8 +58,6 @@ public class ProjectView extends javax.swing.JPanel implements ISelectionObserve
         transitionButton = new javax.swing.JButton();
         arcButton = new javax.swing.JButton();
         inhibitArcButton = new javax.swing.JButton();
-        scrollPanel = new javax.swing.JScrollPane();
-        view = new com.views.View(this);
         propertiesPanel = new javax.swing.JPanel();
 
         setFocusable(false);
@@ -88,7 +89,7 @@ public class ProjectView extends javax.swing.JPanel implements ISelectionObserve
         toolBar.add(selectionModeButton);
 
         placeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Circled-48.png"))); // NOI18N
-        placeButton.setToolTipText("Place");
+        placeButton.setToolTipText("Place (P)");
         placeButton.setFocusable(false);
         placeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         placeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -102,7 +103,7 @@ public class ProjectView extends javax.swing.JPanel implements ISelectionObserve
         toolBar.add(placeButton);
 
         transitionButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Rectangle Stroked-48.png"))); // NOI18N
-        transitionButton.setToolTipText("Transition");
+        transitionButton.setToolTipText("Transition (T)");
         transitionButton.setFocusable(false);
         transitionButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         transitionButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -116,7 +117,7 @@ public class ProjectView extends javax.swing.JPanel implements ISelectionObserve
         toolBar.add(transitionButton);
 
         arcButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Up Right-48.png"))); // NOI18N
-        arcButton.setToolTipText("Arc");
+        arcButton.setToolTipText("Arc (A)");
         arcButton.setFocusable(false);
         arcButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         arcButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -130,7 +131,7 @@ public class ProjectView extends javax.swing.JPanel implements ISelectionObserve
         toolBar.add(arcButton);
 
         inhibitArcButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Right 2-48.png"))); // NOI18N
-        inhibitArcButton.setToolTipText("Inhibition arc");
+        inhibitArcButton.setToolTipText("Inhibition arc (I)");
         inhibitArcButton.setFocusable(false);
         inhibitArcButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         inhibitArcButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -144,23 +145,6 @@ public class ProjectView extends javax.swing.JPanel implements ISelectionObserve
         toolBar.add(inhibitArcButton);
 
         verticalSplitPanel.setTopComponent(toolBar);
-
-        scrollPanel.setFocusable(false);
-
-        javax.swing.GroupLayout viewLayout = new javax.swing.GroupLayout(view);
-        view.setLayout(viewLayout);
-        viewLayout.setHorizontalGroup(
-            viewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 734, Short.MAX_VALUE)
-        );
-        viewLayout.setVerticalGroup(
-            viewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 440, Short.MAX_VALUE)
-        );
-
-        scrollPanel.setViewportView(view);
-
-        verticalSplitPanel.setRightComponent(scrollPanel);
 
         horizontalSplitPanel.setRightComponent(verticalSplitPanel);
 
@@ -211,12 +195,10 @@ public class ProjectView extends javax.swing.JPanel implements ISelectionObserve
     private javax.swing.JButton inhibitArcButton;
     private javax.swing.JButton placeButton;
     private javax.swing.JPanel propertiesPanel;
-    private javax.swing.JScrollPane scrollPanel;
     private javax.swing.JButton selectionModeButton;
     private javax.swing.JToolBar toolBar;
     private javax.swing.JButton transitionButton;
     private javax.swing.JSplitPane verticalSplitPanel;
-    private com.views.View view;
     // End of variables declaration//GEN-END:variables
 
     @Override

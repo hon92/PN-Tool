@@ -40,7 +40,84 @@ public class ReachibilitySet
         algorithms.add(alg);
     }
 
+    public Set<Marking> getReachibilitySet() // not working
+    {
+        Set<Marking> reachibilitySet = new HashSet<>();
+        Marking initialMarking = net.getMarking();
+        reachibilitySet.add(initialMarking);
+
+        boolean newFound = true;
+        while (newFound)
+        {
+            Set<Marking> newToAdd = new HashSet<>();
+
+            for (Marking m : reachibilitySet)
+            {
+                newFound = false;
+                simulator.setMarking(m);
+                List<Transition> avaT = simulator.getAvailableTransitions();
+                for (Transition t : avaT)
+                {
+                    Marking newM = tryTransition(m, t);
+                    if (!reachibilitySet.contains(newM))
+                    {
+                        newToAdd.add(newM);
+                        newFound = true;
+                    }
+                }
+            }
+            reachibilitySet.addAll(newToAdd);
+        }
+
+        return reachibilitySet;
+    }
+
     public MarkingGraph getGraph()
+    {
+        Marking m0 = net.getMarking();
+        MarkingGraph graph = new MarkingGraph(m0);
+        Queue<Marking> newMarkings = new ArrayDeque<>();
+        newMarkings.add(m0);
+        graph.addNode(m0);
+
+        while (!newMarkings.isEmpty())
+        {
+            Marking m = newMarkings.poll();
+            simulator.setMarking(m);
+
+            for (AlgorithmModel alg : algorithms)
+            {
+
+                List<Transition> ts = alg.algorithm.getAmpleSet(simulator);
+                if (ts.isEmpty())
+                {
+                    continue;
+                }
+                for (Transition t : ts)
+                {
+                    Marking mm = tryTransition(m, t);
+                    List<Marking> path2 = new ArrayList<>();
+                    graph.getPath(m0, m, path2, new HashSet<>());
+
+                    for (Marking mpp : path2)
+                    {
+                        mm = mpp.coverBy(mm);
+                    }
+
+                    if (!graph.getGraph().containsKey(mm))
+                    {
+                        graph.addNode(mm);
+                        newMarkings.add(mm);
+                    }
+                    graph.addEdge(m, mm, t, alg.color);
+                }
+            }
+        }
+        net.setMarking(m0);
+        return graph;
+    }
+
+    public MarkingGraph getGraph_OLD()
     {
         Marking initial = net.getMarking();
         Queue<Marking> q = new ArrayDeque<>();
@@ -77,6 +154,7 @@ public class ReachibilitySet
                     Marking marking = setPrevInfinity(next, newMarking);
 
                     Marking coveringMarking = null;
+
                     for (Marking m : finalMarks)
                     {
                         if (isCovering(marking, m))
@@ -152,6 +230,10 @@ public class ReachibilitySet
                 newM.putMapping(key, val);
             }
 
+        }
+        if (!covering)
+        {
+            return marking;
         }
         return newM;
     }

@@ -45,6 +45,7 @@ public class PNTool implements IToolController
                 newProjectName += ".xml";
             }
 
+            GeneratorID.getInstance().reset();
             Net net = new Net(newProjectName);
             File projectFile = new File(newProjectName);
             currentProject = new SimpleProject(net, projectFile);
@@ -141,7 +142,17 @@ public class PNTool implements IToolController
         if (retVal == JFileChooser.APPROVE_OPTION)
         {
             File selectedFile = fileChooser.getSelectedFile();
+            closeSimulator();
             openProject(selectedFile);
+        }
+    }
+
+    private void closeSimulator()
+    {
+        if (simulator.isRunning())
+        {
+            simulator.stopSimulation();
+            window.swapSimulationButtons();
         }
     }
 
@@ -152,6 +163,7 @@ public class PNTool implements IToolController
         {
             return;
         }
+        closeSimulator();
         getWindow().setTitle("");
         getWindow().hideView();
         window.getProjectView().hidePropertiesPanel();
