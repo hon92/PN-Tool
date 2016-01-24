@@ -6,6 +6,7 @@
 package net.marking;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -105,6 +106,72 @@ public class Marking
 
         return sb.toString();
 
+    }
+
+    public boolean isCoveringBy(Marking marking) // m > this
+    {
+        for (Map.Entry<Integer, Integer> m : marking.getMap().entrySet())
+        {
+            int key = m.getKey();
+            int val = m.getValue();
+
+            if (mapping.get(key) > val)
+            {
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+    public Marking coverBy(Marking marking)
+    {
+        Marking newMarking = new Marking();
+        for (Map.Entry<Integer, Integer> entry : getMap().entrySet())
+        {
+            int p = entry.getKey();
+            int tokens = entry.getValue();
+            if (tokens == Integer.MAX_VALUE)
+            {
+                marking.getMap().put(p, tokens);
+            }
+        }
+
+        boolean noCovering = false;
+        for (Map.Entry<Integer, Integer> entry : getMap().entrySet())
+        {
+            int key = entry.getKey();
+            int value = entry.getValue();
+
+            int markingValue = marking.get(key);
+
+            if (markingValue >= value)
+            {
+                if (markingValue > value || (markingValue == Integer.MAX_VALUE || value == Integer.MAX_VALUE))
+                {
+                    newMarking.putMapping(key, Integer.MAX_VALUE);
+                }
+                else
+                {
+                    newMarking.putMapping(key, value);
+                }
+            }
+            else if (value == Integer.MAX_VALUE)
+            {
+                newMarking.putMapping(key, Integer.MAX_VALUE);
+            }
+            else
+            {
+                noCovering = true;
+                break;
+            }
+
+        }
+        if (noCovering)
+        {
+            return marking;
+        }
+        return newMarking;
     }
 
 }

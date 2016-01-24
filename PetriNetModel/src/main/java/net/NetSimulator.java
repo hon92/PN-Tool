@@ -32,12 +32,18 @@ public class NetSimulator
 
         for (Arc a : inputArcs)
         {
-            a.getPlace().removeTokens(a.getCardinality());
+            if (a.getPlace().getTokensCount() != Integer.MAX_VALUE)
+            {
+                a.getPlace().removeTokens(a.getCardinality());
+            }
         }
 
         for (Arc a : outputArcs)
         {
-            a.getPlace().addTokens(a.getCardinality());
+            if (a.getPlace().getTokensCount() != Integer.MAX_VALUE)
+            {
+                a.getPlace().addTokens(a.getCardinality());
+            }
         }
     }
 
