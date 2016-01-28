@@ -494,14 +494,14 @@ public class PluginPickerDialog extends javax.swing.JDialog
 
     public Set<AlgorithmModel> getUsedPlugins()
     {
-        for (AlgorithmModel am : pluginsAlgorithms)
-        {
-            useModel.removeElement(am);
-        }
         Set<AlgorithmModel> set = new HashSet<>();
         for (int i = 0; i < useModel.getSize(); i++)
         {
             set.add(useModel.get(i));
+        }
+        for (AlgorithmModel am : pluginsAlgorithms)
+        {
+            useModel.removeElement(am);
         }
         return set;
     }
