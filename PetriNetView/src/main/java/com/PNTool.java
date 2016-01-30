@@ -8,8 +8,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JFileChooser;
@@ -195,6 +193,37 @@ public class PNTool implements IToolController
         }
     }
 
+    private File[] getPluginsFromPluginFolder()
+    {
+        File pluginsFolder = new File("plugins");
+        if (!pluginsFolder.exists())
+        {
+            pluginsFolder.mkdir();
+            return null;
+        }
+
+        File[] foundJarFiles = pluginsFolder.listFiles(new FileFilter()
+        {
+
+            @Override
+            public boolean accept(File pathname)
+            {
+                if (!pathname.isFile())
+                {
+                    return false;
+                }
+                if (!pathname.getName().endsWith(".jar"))
+                {
+                    return false;
+                }
+                return true;
+            }
+
+        }
+        );
+        return foundJarFiles;
+    }
+
     @Override
     public void generateReachibilityGraph()
     {
@@ -203,35 +232,7 @@ public class PNTool implements IToolController
             return;
         }
 
-        File[] foundJarFiles = null;
-        try
-        {
-            URL url = ClassLoader.getSystemClassLoader().getResource("plugins");
-            File pluginsFolder = new File(url.toURI());
-            foundJarFiles = pluginsFolder.listFiles(new FileFilter()
-            {
-
-                @Override
-                public boolean accept(File pathname)
-                {
-                    if (!pathname.isFile())
-                    {
-                        return false;
-                    }
-                    if (!pathname.getName().endsWith(".jar"))
-                    {
-                        return false;
-                    }
-                    return true;
-                }
-
-            }
-            );
-        }
-        catch (URISyntaxException ex)
-        {
-
-        }
+        File[] foundJarFiles = getPluginsFromPluginFolder();
 
         PluginPickerDialog ppd = new PluginPickerDialog(window, true, availablePlugins, usedPlugins);
         if (foundJarFiles != null)
